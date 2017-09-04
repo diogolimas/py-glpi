@@ -1,9 +1,18 @@
-import urllib2
-baseUrl = "https://sd.uitis.ru/apirest.php"
-initSessionUrl = baseUrl + '/initSession'
-response = urllib2.urlopen(initSessionUrl)
-print response.info()
-html = response.read()
-print html
-response.close()
+import json
+from glpi import GLPI
+from glpi import GlpiProfile
+from glpi import GlpiTicket, Ticket
 
+url = ""
+user = ""
+password = ""
+token = ""
+
+glpi = GLPI(url, token, (user, password))
+
+
+print "Getting all Tickets: "
+print json.dumps(glpi.get_all('ticket'),
+                  indent=4,
+                  separators=(',', ': '),
+                  sort_keys=True)
