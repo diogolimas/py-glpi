@@ -53,7 +53,6 @@ except ConfigParser.NoSectionError:
     logging.error(u"Can't read telegram section in config.ini")
     raise SystemExit(1)
 
-
 criteria = [ {
       "link":"AND",
       "field":"12",
@@ -75,9 +74,7 @@ try:
     with glpi_api.connect(glpi_url, glpi_apptoken, glpi_token, False) as glpi:
         chamados = glpi.search('Ticket', criteria=criteria,forcedisplay=force_display)
         pprint(chamados)
-        print(type(chamados))
         d = datetime.today() - timedelta(hours=0, minutes=30)
-        print(d)
         atualizacoes = filter(lambda c: datetime.strptime(c['19'], '%Y-%m-%d %H:%M:%S') > d, chamados)
         chamadosAtualizacao = list(atualizacoes)
 
@@ -99,6 +96,7 @@ for chamado in chamadosAtualizacao:
     print(messageTelegram)
     bot.sendMessage(CHAT_ID_TELEGRAM, messageTelegram)
 
+bot.sendMessage(CHAT_ID_TELEGRAM, 'log de verificação {current}'.format(current= datetime.today()))
 
 client = MyClient(intents=intents)
 client.run(TOKEN)
